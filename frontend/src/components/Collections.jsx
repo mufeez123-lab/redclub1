@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
+
 export default function Collections() {
   const navigate = useNavigate();
   const collections = [
@@ -97,6 +98,7 @@ export default function Collections() {
           ))}
         </div>
       </section>
+      
     </>
   );
 }

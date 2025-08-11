@@ -1,80 +1,49 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';  // Adjust path if needed
-import gsap from 'gsap';
+import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import LoginModal from '../components/Login'; // Adjust path if needed
+
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function CollectionDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { isLoggedIn } = useContext(AuthContext);
 
-  // Refs for animated elements
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // track login status
+
+  // Refs for animations
   const containerRef = useRef(null);
   const imageRef = useRef(null);
   const infoRef = useRef(null);
 
+  // Mock collections data
   const collections = [
     {
       id: '1',
       title: 'Sheherwani',
-      buyPrice: 4999,
-      rentPrice: 999,
-      location: 'Deralakatte',
+      buyPrice: 15000,
+      rentPrice: 2500,
       image: '/images/sheh.jpg',
-      description:
-        'Elegant Sheherwani perfect for weddings and traditional occasions. Crafted with premium fabric and intricate embroidery.',
+      description: 'Elegant traditional wear for weddings and special occasions.',
     },
     {
       id: '2',
-      title: 'Jodhpuri',
-      buyPrice: 8999,
-      rentPrice: 1999,
-      location: 'Uppala',
-      image: '/images/blazzers.jpg',
-      description:
-        'Stylish Blazers made for formal and casual wear. Comfortable fit and premium stitching for a sleek look.',
-    },
-    {
-      id: '3',
-      title: 'Kurtha',
-      buyPrice: 2999,
-      rentPrice: 799,
-      location: ' Mangalore',
-      image: '/images/kurta.jpg',
-      description:
-        'Traditional Kurtha designed for daily wear and festive events. Breathable fabric with beautiful patterns.',
-    },
-    {
-      id: '4',
-      title: 'Wedding shoes',
-      buyPrice: 2999,
-      rentPrice: 699,
-      location: 'Uppala',
-      image: '/images/shoes.jpg',
-      description:
-        'Perfect wedding shoes combining comfort and style. Designed to complete your wedding look flawlessly.',
-    },
-    {
-      id: '5',
-      title: 'Blazzers',
-      buyPrice: 2999,
-      rentPrice: 699,
-      location: 'Uppala',
-      image: '/images/jodh.jpg',
-      description:
-        'Perfect wedding blazzers combining comfort and style. Designed to complete your wedding look flawlessly.',
+      title: 'Designer Lehenga',
+      buyPrice: 35000,
+      rentPrice: 5000,
+      image: '/images/lehenga.jpg',
+      description: 'Gorgeous lehenga with intricate embroidery and fine fabric.',
     },
   ];
 
   const collection = collections.find(item => item.id === id);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    if (!collection) return;
 
-    // Animate image sliding in from left
     gsap.fromTo(
       imageRef.current,
       { x: -100, opacity: 0 },
@@ -87,12 +56,10 @@ export default function CollectionDetails() {
           trigger: containerRef.current,
           start: 'top 80%',
           toggleActions: 'play none none reverse',
-          // markers: true, // Uncomment to debug
         },
       }
     );
 
-    // Animate info sliding in from right
     gsap.fromTo(
       infoRef.current,
       { x: 100, opacity: 0 },
@@ -106,16 +73,14 @@ export default function CollectionDetails() {
           trigger: containerRef.current,
           start: 'top 80%',
           toggleActions: 'play none none reverse',
-          // markers: true,
         },
       }
     );
 
-    // Cleanup on unmount
     return () => {
       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-  }, [id]);
+  }, [collection]);
 
   if (!collection) {
     return (
@@ -132,11 +97,10 @@ export default function CollectionDetails() {
   }
 
   const handleBookNow = () => {
-    if (isLoggedIn) {
-      alert(`Booking confirmed for ${collection.title}!`);
+    if (!isLoggedIn) {
+      setIsLoginOpen(true); // open login modal
     } else {
-      alert('Please login or register to book.');
-      navigate('/login'); // Adjust if your login route differs
+      navigate(`/booking/${id}`); // go to booking
     }
   };
 
@@ -168,9 +132,6 @@ export default function CollectionDetails() {
             <p className="text-green-600 font-medium text-base">
               Rent: ₹{collection.rentPrice.toLocaleString()}
             </p>
-            <p className="text-gray-600 font-medium text-base">
-              Location: {collection.location}
-            </p>
           </div>
 
           <button
@@ -184,6 +145,19 @@ export default function CollectionDetails() {
           <p className="text-gray-700 leading-relaxed">{collection.description}</p>
         </div>
       </div>
+
+      {/* Login Modal */}
+      <LoginModal
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+        onLoginSuccess={() => {
+          setIsLoggedIn(true);
+          setIsLoginOpen(false);
+          navigate(`/booking/${id}`);
+        }}
+      />
+
     </div>
+   
   );
 }

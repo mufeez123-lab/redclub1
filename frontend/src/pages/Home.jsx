@@ -3,6 +3,7 @@ import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
 import Login from '../components/Login';
 import Collections from '../components/Collections';
+import Footer from '../components/Footer';
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -28,30 +29,32 @@ export default function Home() {
   }, []);
 
   return (
-    <div id="smooth-wrapper" style={{ height: '100vh', overflow: 'hidden' }}>
-      <div id="smooth-content">
-        <Navbar />
-
-        {/* Hero section */}
-        <div className="hero-content">
-          <Hero />
-        </div>
-
-        <Collections />
-
-        {/* Login / Signup button */}
-        <div className="flex justify-center mt-8">
-          <button
-            onClick={() => setShowLogin(true)}
-            className="bg-[#800020] text-white px-6 py-2 rounded hover:bg-[#a8324b] transition"
-          >
-            Login / Sign Up
-          </button>
-        </div>
-
-        {/* Login Modal */}
-        <Login isOpen={showLogin} onClose={() => setShowLogin(false)} />
+   <>
+  <Navbar />
+  <div id="smooth-wrapper" style={{ overflow: 'hidden' }}>
+    <div id="smooth-content">
+      <div className="hero-content">
+        <Hero />
       </div>
+
+      <Collections />
+
+      <div className="flex justify-center mt-8">
+        <button
+          onClick={() => setShowLogin(true)}
+          className="bg-[#800020] text-white px-6 py-2 rounded hover:bg-[#a8324b] transition"
+        >
+          Login / Sign Up
+        </button>
+      </div>
+
+      <Login isOpen={showLogin} onClose={() => setShowLogin(false)} />
+
+      {/* Footer at the very end */}
+      <Footer />
     </div>
+  </div>
+</>
+
   );
 }

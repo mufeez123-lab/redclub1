@@ -1,47 +1,47 @@
-import { useState } from 'react';
+import { useState } from "react";
 
 export default function LoginModal({ isOpen, onClose }) {
-  const [isLogin, setIsLogin] = useState(true); // toggle between login/signup
+  const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
-    username: '',
-    email: '',
-    password: '',
+    username: "",
+    email: "",
+    password: "",
   });
 
   function handleChange(e) {
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   }
 
   function handleSubmit(e) {
     e.preventDefault();
-
     if (isLogin) {
-      // TODO: Add your login logic here
       alert(`Logging in with email: ${formData.email}`);
     } else {
-      // TODO: Add your signup logic here
       alert(`Signing up with username: ${formData.username}, email: ${formData.email}`);
     }
-    // Clear form or close modal
     onClose();
   }
 
-  if (!isOpen) return null; // don't render if not open
+  if (!isOpen) return null;
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+      className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-44 z-50"
       onClick={onClose}
     >
       <div
         className="bg-white rounded-lg p-6 w-full max-w-md max-h-[80vh] overflow-auto"
-        onClick={e => e.stopPropagation()} // prevent closing when clicking inside modal
+        onClick={(e) => e.stopPropagation()}
       >
-        <h2 className="text-2xl font-bold mb-4 text-center">{isLogin ? 'Login' : 'Create Account'}</h2>
+        <h2 className="text-2xl font-bold mb-4 text-center">
+          {isLogin ? "Login" : "Create Account"}
+        </h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           {!isLogin && (
             <div>
-              <label htmlFor="username" className="block mb-1 font-semibold">Username</label>
+              <label htmlFor="username" className="block mb-1 font-semibold">
+                Username
+              </label>
               <input
                 id="username"
                 name="username"
@@ -55,7 +55,9 @@ export default function LoginModal({ isOpen, onClose }) {
           )}
 
           <div>
-            <label htmlFor="email" className="block mb-1 font-semibold">Email</label>
+            <label htmlFor="email" className="block mb-1 font-semibold">
+              Email
+            </label>
             <input
               id="email"
               name="email"
@@ -68,7 +70,9 @@ export default function LoginModal({ isOpen, onClose }) {
           </div>
 
           <div>
-            <label htmlFor="password" className="block mb-1 font-semibold">Password</label>
+            <label htmlFor="password" className="block mb-1 font-semibold">
+              Password
+            </label>
             <input
               id="password"
               name="password"
@@ -80,20 +84,19 @@ export default function LoginModal({ isOpen, onClose }) {
             />
           </div>
 
-        <button
-  type="submit"
-  style={{ backgroundColor: '#8a6c1a ' }}
-  className="w-full  text-white font-semibold py-2 rounded hover:bg-gray-800 transition"
->
-  {isLogin ? 'Login' : 'Sign Up'}
-</button>
-
+          <button
+            type="submit"
+            style={{ backgroundColor: "#8a6c1a" }}
+            className="w-full text-white font-semibold py-2 rounded hover:bg-gray-800 transition"
+          >
+            {isLogin ? "Login" : "Sign Up"}
+          </button>
         </form>
 
         <p className="mt-4 text-center text-gray-600">
           {isLogin ? (
             <>
-              Don't have an account?{' '}
+              Don't have an account?{" "}
               <button
                 onClick={() => setIsLogin(false)}
                 className="text-red-600 font-semibold hover:underline"
@@ -103,7 +106,7 @@ export default function LoginModal({ isOpen, onClose }) {
             </>
           ) : (
             <>
-              Already have an account?{' '}
+              Already have an account?{" "}
               <button
                 onClick={() => setIsLogin(true)}
                 className="text-red-600 font-semibold hover:underline"
