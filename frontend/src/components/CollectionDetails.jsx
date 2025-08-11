@@ -31,10 +31,10 @@ export default function CollectionDetails() {
     },
     {
       id: '2',
-      title: 'Designer Lehenga',
+      title: 'Jodhpuri',
       buyPrice: 35000,
       rentPrice: 5000,
-      image: '/images/lehenga.jpg',
+      image: '/images/blazzers.jpg',
       description: 'Gorgeous lehenga with intricate embroidery and fine fabric.',
     },
   ];
